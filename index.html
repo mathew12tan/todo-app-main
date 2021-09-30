@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css">
+  <title>Todo app</title>
+</head>
+
+<body>
+  <main>
+    <div class="heading">
+      <h1>Todo</h1>
+      <button class="theme-btn">
+        <span class="sun"><img src="./images/icon-sun.svg" alt="icon-sun"></span>
+        <span class="moon"><img src="./images/icon-moon.svg" alt="icon-moon"></span>
+      </button>
+    </div>
+
+    <form class="input-form div-background">
+      <button type="submit" class="submit-btn interactive-btn"><img class="check-img" src="./images/icon-check.svg"
+          alt="icon-check"><span></span></button>
+      <input type="text" name="todo" id="todo" placeholder="Create a new todo...">
+    </form>
+
+    <div class="list-container div-background">
+      <div class="list"></div>
+
+      <div class="list-info">
+        <p class="item-left">0 items left</p>
+        <div class="filter div-background">
+          <button class="filter-btn" data-type="all">all</button>
+          <button class="filter-btn" data-type="active">active</button>
+          <button class="filter-btn" data-type="completed">completed</button>
+        </div>
+        <button class="clear-btn">Clear Completed</button>
+      </div>
+    </div>
+
+    <div class="filter div-background">
+      <button class="filter-btn" data-type="all">all</button>
+      <button class="filter-btn" data-type="active">active</button>
+      <button class="filter-btn" data-type="completed">completed</button>
+    </div>
+
+    <p class="message">Drag and drop to reorder list</p>
+
+    <div class="attribution">
+      Coded by <a href="https://github.com/mathew12tan?tab=repositories">Mathew</a>
+    </div>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+
+</html>
