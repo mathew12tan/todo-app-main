@@ -1,7 +1,17 @@
 // theme
 const themeBtn = document.querySelector(".theme-btn");
 themeBtn.addEventListener("click", function () {
-    document.querySelector("body").classList.toggle("dark-theme");
+    let theme = localStorage.getItem("theme");
+    switch (theme) {
+        case "light":
+            localStorage.setItem("theme", "dark");
+            document.querySelector("body").classList.add("dark-theme");
+            break;
+        case "dark":
+            localStorage.setItem("theme", "light");
+            document.querySelector("body").classList.remove("dark-theme");
+            break;
+    }
 })
 
 // query selectors
@@ -31,23 +41,37 @@ filterBtns.forEach(btn => {
             element.classList.remove("selected");
         });
         e.currentTarget.classList.add("selected");
-        list.innerHTML = "";
-        let items = getLocalStorage();
         const type = e.currentTarget.getAttribute("data-type");
-        const filterItems = items.filter(item => item.status === type);
-        type === "all" ?
-            items.forEach(item => {
-                createListItem(item.id, item.value, item.status);
-                inputForm.classList.remove("deactivate");
-                list.setAttribute("ondragstart", "")
-                message.textContent = "Drag and drop to reorder list";
-            }) :
-            filterItems.forEach(filterItem=> {
-                createListItem(filterItem.id, filterItem.value, filterItem.status);
-                inputForm.classList.add("deactivate");
-                list.setAttribute("ondragstart", "return false")
-                message.textContent = "Drag and drop disabled";
-            });
+        const items = document.querySelectorAll(".item-div");
+        items.forEach(element => {
+            element.style.display = "flex";
+        });
+        switch (type) {
+            case "all":
+                items.forEach(element => {
+                    element.style.display = "flex";
+                    itemQty();
+                });
+                break;
+            case "active":
+                const notActiveItems = document.querySelectorAll(`.item-div:not([data-status="active"])`);
+                notActiveItems.forEach(element => {
+                    element.style.display = "none";
+                });
+                const activeNum = items.length - notActiveItems.length;
+                activeNum > 1? wording = "items": wording = "item";
+                itemleft.textContent = `${activeNum} active ${wording} left`;
+                break;
+            case "completed":
+                const notCompletedItems = document.querySelectorAll(`.item-div:not([data-status="completed"])`);
+                notCompletedItems.forEach(element => {
+                    element.style.display = "none";
+                });
+                const completedNum = items.length - notCompletedItems.length;
+                completedNum > 1? wording = "items": wording = "item";
+                itemleft.textContent = `${completedNum} completed ${wording} left`;
+                break;
+        }
     });
 })
 
@@ -63,6 +87,11 @@ list.addEventListener("dragend", function (e) {
         items.push(item);
     }
     localStorage.setItem("list", JSON.stringify(items));
+})
+
+
+list.addEventListener("dragenter", function (e) {
+    e.preventDefault();
 })
 
 // functions
@@ -210,6 +239,18 @@ function setupItems() {
         });
     }
     itemQty();
+    let theme = localStorage.getItem("theme");
+    switch (theme) {
+        case null:
+            localStorage.setItem("theme", "light");
+            break;
+        case "light":
+            document.querySelector("body").classList.remove("dark-theme");
+            break;
+        case "dark":
+            document.querySelector("body").classList.add("dark-theme");
+            break;
+    }
 }
 
 function createListItem(id, value, status) {
@@ -242,7 +283,7 @@ function createListItem(id, value, status) {
     // drag and drop
     const draggables = document.querySelectorAll(".item-div");
     draggables.forEach(draggable => {
-        draggable.addEventListener("dragstart", (e) => {
+        draggable.addEventListener("dragstart", () => {
             draggable.classList.add("dragging");
         })
         draggable.addEventListener("dragend", () => {
